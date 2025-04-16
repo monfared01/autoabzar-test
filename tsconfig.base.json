@@ -1,0 +1,39 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@autoabzar-test/customer-application": [
+        "libs/customer/application/src/index.ts"
+      ],
+      "@autoabzar-test/customer-domain": ["libs/customer/domain/src/index.ts"],
+      "@autoabzar-test/customer-infrastructure": [
+        "libs/customer/infrastructure/src/index.ts"
+      ],
+      "@autoabzar-test/customer/domain": ["libs/src/index.ts"],
+      "@autoabzar-test/db": ["libs/shared/db/src/index.ts"],
+      "@autoabzar-test/domain": ["libs/customer/src/index.ts"],
+      "@autoabzar-test/order-application": [
+        "libs/order/application/src/index.ts"
+      ],
+      "@autoabzar-test/order-domain": ["libs/order/domain/src/index.ts"],
+      "@autoabzar-test/order-infrastructure": [
+        "libs/order/infrastructure/src/index.ts"
+      ],
+      "@autoabzar-test/tools": ["libs/shared/tools/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

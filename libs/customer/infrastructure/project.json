@@ -1,0 +1,9 @@
+{
+  "name": "customer-infrastructure",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/customer/infrastructure/src",
+  "projectType": "library",
+  "tags": ["infrastructure", "customer", "scope:customer"],
+  "// targets": "to see all targets run: nx show project customer-infrastructure --web",
+  "targets": {}
+}

@@ -1,0 +1,9 @@
+{
+  "name": "order-domain",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/order/domain/src",
+  "projectType": "library",
+  "tags": ["domain", "order", "scope:order"],
+  "// targets": "to see all targets run: nx show project order-domain --web",
+  "targets": {}
+}
