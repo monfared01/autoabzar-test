@@ -10,14 +10,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   username: process.env['DB_USERNAME'],
   password: process.env['DB_PASSWORD'],
   database: process.env['DB_NAME'],
-  autoLoadEntities: true,
+  autoLoadEntities: false, 
   synchronize: process.env['NODE_ENV'] !== 'production',
-  migrations: ['migrations/*.ts'],
-};
-
-export const typeOrmCliConfig = {
-  ...typeOrmConfig,
-  cli: {
-    migrationsDir: 'migrations',
-  },
 };

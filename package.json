@@ -2,7 +2,12 @@
   "name": "@autoabzar-test/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "typeorm": "ts-node -r tsconfig-paths/register ./libs/shared/db/src/connection/data-source.ts",
+    "db:generate": "ts-node -r tsconfig-paths/register ./libs/shared/db/src/connection/data-source.ts migration:generate -n",
+    "db:run": "ts-node -r tsconfig-paths/register ./libs/shared/db/src/connection/data-source.ts migration:run",
+    "db:revert": "ts-node -r tsconfig-paths/register ./libs/shared/db/src/connection/data-source.ts migration:revert"
+  },
   "private": true,
   "devDependencies": {
     "@eslint/js": "^9.8.0",
@@ -25,6 +30,7 @@
     "nx": "20.8.0",
     "prettier": "^2.6.2",
     "tslib": "^2.3.0",
+    "typeorm": "^0.3.22",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.19.0",
     "webpack-cli": "^5.1.4"
@@ -39,7 +45,6 @@
     "dotenv": "^16.5.0",
     "pg": "^8.14.1",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.0",
-    "typeorm": "^0.3.22"
+    "rxjs": "^7.8.0"
   }
 }

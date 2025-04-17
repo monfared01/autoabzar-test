@@ -1,1 +1,1 @@
-export * from './lib/customer-infrastructure.module';
+export * from './customer-infrastructure.module';
