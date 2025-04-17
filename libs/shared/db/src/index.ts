@@ -1,1 +1,1 @@
-export * from './lib/db.module';
+export * from './db.module';

@@ -1,1 +1,1 @@
-export * from './lib/tools.module';
+export * from './tools.module';

@@ -1,1 +1,1 @@
-export * from './lib/order-infrastructure.module';
+export * from './order-infrastructure.module';
