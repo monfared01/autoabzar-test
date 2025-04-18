@@ -1,7 +1,10 @@
 import { DataSource } from 'typeorm';
 import { DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
-// import * as entities from './entities';
+import {
+  CustomerEntity,
+  SessionEntity,
+} from '@autoabzar-test/customer-infrastructure';
 
 config();
 
@@ -13,7 +16,7 @@ export const dataSourceConfig: DataSourceOptions = {
   password: process.env['DB_PASSWORD'],
   database: process.env['DB_NAME'],
   synchronize: false,
-  entities: [],
+  entities: [CustomerEntity, SessionEntity],
   migrations: ['libs/shared/db/src/connection/migrations/*.ts'],
 };
 

@@ -9,8 +9,9 @@ import { typeOrmConfig } from './connection/typeorm.config';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    TypeOrmModule.forRoot(typeOrmConfig),
+    TypeOrmModule.forRoot(typeOrmConfig)
   ],
+  exports: [TypeOrmModule],
 })
 
 export class DbModule {}
