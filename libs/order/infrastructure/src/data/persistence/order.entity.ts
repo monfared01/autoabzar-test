@@ -1,14 +1,12 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Order } from '@autoabzar-test/order-domain';
 import { CustomerEntity } from '@autoabzar-test/customer-infrastructure';
+import { DecoratedEntity } from '@autoabzar-test/tools';
 
 @Entity('orders')
-export class OrderEntity {
-  @PrimaryColumn()
-  id: string;
-
+export class OrderEntity extends DecoratedEntity {
   @Column()
-  customerId: string;
+  customerId: number;
 
   @ManyToOne(() => CustomerEntity)
   @JoinColumn({ name: 'customerId' })
