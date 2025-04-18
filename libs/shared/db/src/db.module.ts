@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from './connection/typeorm.config';
+import { DataSource } from 'typeorm';
+import { dataSourceConfig } from './connection/data-source';
 
 @Module({
   imports: [
@@ -9,9 +9,17 @@ import { typeOrmConfig } from './connection/typeorm.config';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    TypeOrmModule.forRoot(typeOrmConfig)
   ],
-  exports: [TypeOrmModule],
+  providers: [
+    {
+      provide: DataSource,
+      useFactory: async () => {
+        const dataSource = new DataSource(dataSourceConfig);
+        await dataSource.initialize(); 
+        return dataSource;
+      },
+    },
+  ],
+  exports: [DataSource], 
 })
-
 export class DbModule {}

@@ -1,10 +1,8 @@
 import { DataSource } from 'typeorm';
 import { DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
-import {
-  CustomerEntity,
-  SessionEntity,
-} from '@autoabzar-test/customer-infrastructure';
+import * as fs from 'fs';
+
 
 config();
 
@@ -16,7 +14,11 @@ export const dataSourceConfig: DataSourceOptions = {
   password: process.env['DB_PASSWORD'],
   database: process.env['DB_NAME'],
   synchronize: false,
-  entities: [CustomerEntity, SessionEntity],
+  ssl: {
+    rejectUnauthorized: true,
+    ca: fs.readFileSync(process.env['DB_SSL_CA_PATH'] as string).toString(),
+  },
+  entities: ['libs/**/infrastructure/**/*.entity.{ts,js}'],
   migrations: ['libs/shared/db/src/connection/migrations/*.ts'],
 };
 

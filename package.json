@@ -2,12 +2,12 @@
   "name": "@autoabzar-test/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "typeorm": "ts-node -r tsconfig-paths/register ./libs/shared/db/src/connection/data-source.ts",
-    "db:generate": "ts-node -r tsconfig-paths/register ./libs/shared/db/src/connection/data-source.ts migration:generate -n",
-    "db:run": "ts-node -r tsconfig-paths/register ./libs/shared/db/src/connection/data-source.ts migration:run",
-    "db:revert": "ts-node -r tsconfig-paths/register ./libs/shared/db/src/connection/data-source.ts migration:revert"
-  },
+"scripts": {
+  "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+  "typeorm:generate": "npm run typeorm -- migration:generate ./libs/shared/db/src/connection/migrations/Mig -d ./libs/shared/db/src/connection/data-source.ts",
+  "typeorm:migrate": "npm run typeorm -- migration:run -d ./libs/shared/db/src/connection/data-source.ts",
+  "typeorm:revert": "npm run typeorm -- migration:revert -d ./libs/shared/db/src/connection/data-source.ts"
+},
   "private": true,
   "devDependencies": {
     "@eslint/js": "^9.8.0",
@@ -29,6 +29,7 @@
     "eslint-config-prettier": "^10.0.0",
     "nx": "20.8.0",
     "prettier": "^2.6.2",
+    "ts-node": "^10.9.2",
     "tslib": "^2.3.0",
     "typeorm": "^0.3.22",
     "typescript": "~5.7.2",

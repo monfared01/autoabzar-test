@@ -18,6 +18,9 @@ export class CustomerEntity extends DecoratedEntity {
   email: string;
 
   @Column()
+  isAdmin: boolean;
+
+  @Column()
   password: string;
 
   @CreateDateColumn()
@@ -46,6 +49,7 @@ export class CustomerEntity extends DecoratedEntity {
       this.name,
       this.email,
       this.password,
+      this.isAdmin,
       this.createdAt,
       this.updatedAt
     );
