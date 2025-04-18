@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  BeforeInsert,
 } from 'typeorm';
 import { Session } from '@autoabzar-test/customer-domain';
 import { DecoratedEntity } from '@autoabzar-test/tools';
@@ -31,6 +32,15 @@ export class SessionEntity extends DecoratedEntity {
 
   @Column({ default: false })
   isRevoked: boolean;
+
+  @BeforeInsert()
+  setExpiresAt(): void {
+    if (!this.expiresAt) {
+      const oneWeekLater = new Date();
+      oneWeekLater.setDate(oneWeekLater.getDate() + 7);
+      this.expiresAt = oneWeekLater;
+    }
+  }
 
   static fromDomain(session: Session): SessionEntity {
     const entity = new SessionEntity();

@@ -1,16 +1,18 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { OrdersController } from './controllers/orders/orders.controller';
-import { OrderItemsController } from './controllers/orders/order-items.controller';
 import { PaymentsController } from './controllers/orders/payments.controller';
+import { ConfigModule } from '@nestjs/config';
+import { CustomerApplicationModule } from '@autoabzar-test/customer-application';
+import { CustomersController } from './controllers/customers/customers.controller';
+import { AuthController } from './controllers/customers/auth.controller';
 
 @Module({
-  imports: [],
+  imports: [ConfigModule.forRoot(), CustomerApplicationModule],
   controllers: [
-    AppController,
     OrdersController,
-    OrderItemsController,
     PaymentsController,
+    CustomersController,
+    AuthController,
   ],
   providers: [],
 })

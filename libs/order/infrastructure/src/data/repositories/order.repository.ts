@@ -13,9 +13,9 @@ export class OrderRepository
     super(repository);
   }
 
-  async findByCustomerId(customerId: number): Promise<Order | null> {
-    const entity = await this.repository.findOne({ where: { customerId } });
-    return entity ? this.toDomain(entity) : null;
+  async findByCustomerId(customerId: number): Promise<Order[]> {
+    const entities = await this.repository.find({ where: { customerId } });
+    return entities.map((entity) => this.toDomain(entity));
   }
 
   private toDomain(entity: OrderEntity): Order {

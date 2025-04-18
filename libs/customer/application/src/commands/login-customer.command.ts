@@ -1,0 +1,16 @@
+import { ICommand } from '@nestjs/cqrs';
+import { IsEmail, IsString, MinLength } from 'class-validator';
+
+export class LoginCustomerCommand implements ICommand {
+  @IsEmail({}, { message: 'Email must be valid' })
+  email: string;
+
+  @IsString()
+  @MinLength(6, { message: 'Password must be at least 6 characters long' })
+  password: string;
+
+  constructor(email: string, password: string) {
+    this.email = email;
+    this.password = password;
+  }
+}

@@ -1,4 +1,4 @@
-import { DataSource, EntityManager, EntityTarget } from 'typeorm';
+import { DataSource, EntityManager } from 'typeorm';
 import { IUnitOfWork } from './unit-of-work.interface';
 import { IGenericRepository } from './generic-repository.interface';
 
@@ -26,5 +26,5 @@ export abstract class UnitOfWork implements IUnitOfWork {
     await this._manager.queryRunner?.release();
   }
 
-  abstract getRepository<T>(entity: EntityTarget<T>): IGenericRepository<T>;
+  abstract getRepository<T>(entity: string): IGenericRepository<T>;
 }

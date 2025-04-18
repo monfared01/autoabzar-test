@@ -1,8 +1,5 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
-import {
-  UnitOfWork,
-  IGenericRepository,
-} from '@autoabzar-test/tools';
+import { UnitOfWork, IGenericRepository } from '@autoabzar-test/tools';
 import {
   ICustomerRepository,
   ISessionRepository,
@@ -10,7 +7,7 @@ import {
 } from '@autoabzar-test/customer-domain';
 import { CustomerEntity } from '../data/persistence/customer.entity';
 import { SessionEntity } from '../data/persistence/session.entity';
-import { DataSource, EntityTarget } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { CustomerRepository } from './repositories/customer.repository';
 import { SessionRepository } from './repositories/session.repository';
 
@@ -25,7 +22,7 @@ export class CustomerUnitOfWork
   constructor(@Inject('DataSource') dataSource: DataSource) {
     super(dataSource);
   }
-  
+
   get customerRepository(): ICustomerRepository {
     if (!this._customerRepository) {
       this._customerRepository = new CustomerRepository(
@@ -44,12 +41,12 @@ export class CustomerUnitOfWork
     return this._sessionRepository;
   }
 
-  getRepository<T>(entity: EntityTarget<T>): IGenericRepository<T> {
-    if (entity === CustomerEntity) {
+  getRepository<T>(entity: string): IGenericRepository<T> {
+    if (entity === 'Customer') {
       return this.customerRepository as unknown as IGenericRepository<T>;
     }
 
-    if (entity === SessionEntity) {
+    if (entity === 'Session') {
       return this.sessionRepository as unknown as IGenericRepository<T>;
     }
 

@@ -6,6 +6,6 @@ export interface IUnitOfWork {
   complete(): Promise<void>;
   rollback(): Promise<void>;
 
-  getRepository<T>(entity: new () => T): IGenericRepository<T>;
+  getRepository<T>(entity: string): IGenericRepository<T>;
   readonly manager: EntityManager;
 }
