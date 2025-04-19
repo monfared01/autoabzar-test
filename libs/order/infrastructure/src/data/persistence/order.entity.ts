@@ -5,10 +5,12 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { Order } from '@autoabzar-test/order-domain';
 import { CustomerEntity } from '@autoabzar-test/customer-infrastructure';
 import { DecoratedEntity } from '@autoabzar-test/tools';
+import { PaymentEntity } from './payment.entity';
 
 @Entity('orders')
 export class OrderEntity extends DecoratedEntity {
@@ -27,6 +29,9 @@ export class OrderEntity extends DecoratedEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => PaymentEntity, (payment) => payment.order, { lazy: true })
+  payments: Promise<PaymentEntity[]>;
 
   static fromDomain(order: Order): OrderEntity {
     const entity = new OrderEntity();
