@@ -9,9 +9,8 @@ export class TokenTools implements ITokenTools {
 
   async encode(
     payload: { userId: number },
-    expiresIn?: string | number
   ): Promise<string> {
-    return this.jwtService.signAsync(payload, { expiresIn });
+    return this.jwtService.signAsync(payload);
   }
 
   async decode<T>(token: string, ignoreExpiration: boolean): Promise<T> {

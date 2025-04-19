@@ -18,7 +18,7 @@ import { SessionEntity } from './data/persistence/session.entity';
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: configService.get<string>('JWT_EXPIRES_IN', '60s'),
+          expiresIn: configService.get<string>('JWT_EXPIRES_IN', '1h'),
         },
       }),
       inject: [ConfigService],

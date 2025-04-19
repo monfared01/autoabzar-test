@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { OrdersController } from './controllers/orders/orders.controller';
 import { PaymentsController } from './controllers/orders/payments.controller';
 import { ConfigModule } from '@nestjs/config';
@@ -6,6 +6,8 @@ import { CustomerApplicationModule } from '@autoabzar-test/customer-application'
 import { CustomerController } from './controllers/customers/customers.controller';
 import { AuthController } from './controllers/customers/auth.controller';
 import { CqrsModule } from '@nestjs/cqrs';
+import { AuthMiddleware } from './middlewares/auth.middleware';
+import { IsAdminMiddleware } from './middlewares/is-admin.middleware';
 
 @Module({
   imports: [
@@ -23,4 +25,14 @@ import { CqrsModule } from '@nestjs/cqrs';
   ],
   providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware, IsAdminMiddleware)
+      .forRoutes(CustomerController);
+
+      consumer
+      .apply(AuthMiddleware)
+      .forRoutes({ path: 'auth/', method: RequestMethod.PUT });
+  }
+}

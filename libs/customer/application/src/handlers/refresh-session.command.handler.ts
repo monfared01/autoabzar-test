@@ -25,10 +25,27 @@ export class RefreshSessionCommandHandler
   async execute(
     command: RefreshSessionCommand
   ): Promise<ResponseDto<RefreshSessionResponose>> {
-    const { userId } = await this.tt.decode<{ userId: number }>(
-      command.accessToken,
-      true
-    );
+    let userId: number;
+    let isExpired = false;
+
+    try {
+      const payload = await this.tt.decode<{ userId: number }>(
+        command.accessToken,
+        false
+      );
+      userId = payload.userId;
+    } catch {
+      try {
+        const payload = await this.tt.decode<{ userId: number }>(
+          command.accessToken,
+          true
+        );
+        userId = payload.userId;
+        isExpired = true;
+      } catch {
+        throw new NotFoundException('Invalid access token');
+      }
+    }
 
     const session = await this.uow.sessionRepository.findOne({
       where: {
@@ -40,13 +57,20 @@ export class RefreshSessionCommandHandler
     });
 
     if (!session) {
-      throw new NotFoundException('Invalid token');
+      throw new NotFoundException('Invalid session or refresh token');
+    }
+
+    if (!isExpired) {
+      return ResponseDto.ok(
+        new RefreshSessionResponose(command.accessToken),
+        'Access token still valid'
+      );
     }
 
     const newAccessToken = await this.tt.encode({ userId });
     return ResponseDto.ok(
       new RefreshSessionResponose(newAccessToken),
-      'Token refreshed'
+      'Access token refreshed'
     );
   }
 }

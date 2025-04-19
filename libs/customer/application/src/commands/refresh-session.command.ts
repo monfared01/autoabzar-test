@@ -1,8 +1,14 @@
-import { ICommand } from '@nestjs/cqrs';
+import { IsString } from 'class-validator';
 
-export class RefreshSessionCommand implements ICommand {
-  constructor(
-    public readonly refreshToken: string,
-    public readonly accessToken: string
-  ) {}
+export class RefreshSessionCommand {
+  @IsString()
+  accessToken: string;
+
+  @IsString()
+  refreshToken: string;
+
+  constructor(accessToken: string, refreshToken: string) {
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
+  }
 }
