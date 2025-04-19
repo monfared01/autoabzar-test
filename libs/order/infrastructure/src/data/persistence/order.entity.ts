@@ -1,4 +1,11 @@
-import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Order } from '@autoabzar-test/order-domain';
 import { CustomerEntity } from '@autoabzar-test/customer-infrastructure';
 import { DecoratedEntity } from '@autoabzar-test/tools';
@@ -15,8 +22,11 @@ export class OrderEntity extends DecoratedEntity {
   @Column()
   total: number;
 
-  @Column({ type: 'timestamp' })
+  @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   static fromDomain(order: Order): OrderEntity {
     const entity = new OrderEntity();
@@ -28,6 +38,12 @@ export class OrderEntity extends DecoratedEntity {
   }
 
   toDomain(): Order {
-    return new Order(this.id, this.customerId, this.total, this.createdAt);
+    return new Order(
+      this.id,
+      this.customerId,
+      this.total,
+      this.createdAt,
+      this.updatedAt
+    );
   }
 }

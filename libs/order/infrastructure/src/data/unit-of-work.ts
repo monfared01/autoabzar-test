@@ -1,6 +1,6 @@
 import { Injectable, Scope } from '@nestjs/common';
-import { DataSource, EntityTarget } from 'typeorm';
-import { UnitOfWork, IGenericRepository } from '@autoabzar-test/tools';
+import { DataSource } from 'typeorm';
+import { UnitOfWork } from '@autoabzar-test/tools';
 import {
   IOrderRepository,
   IOrderUnitOfWork,
@@ -10,26 +10,18 @@ import { OrderRepository } from './repositories/order.repository';
 
 @Injectable({ scope: Scope.REQUEST })
 export class OrderUnitOfWork extends UnitOfWork implements IOrderUnitOfWork {
-  private _customerRepository?: IOrderRepository;
+  private _orderRepository?: IOrderRepository;
 
   constructor(dataSource: DataSource) {
     super(dataSource);
   }
 
-  get customerRepository(): IOrderRepository {
-    if (!this._customerRepository) {
-      this._customerRepository = new OrderRepository(
+  get orderRepository(): IOrderRepository {
+    if (!this._orderRepository) {
+      this._orderRepository = new OrderRepository(
         this.manager.getRepository(OrderEntity)
       );
     }
-    return this._customerRepository;
-  }
-
-  getRepository<T>(entity: EntityTarget<T>): IGenericRepository<T> {
-    if (entity === OrderEntity) {
-      return this.customerRepository as unknown as IGenericRepository<T>;
-    }
-
-    throw new Error(`Repository for entity ${entity.toString()} not found`);
+    return this._orderRepository;
   }
 }

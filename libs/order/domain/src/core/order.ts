@@ -3,6 +3,7 @@ export class Order {
     public readonly id: number,
     public customerId: number,
     public total: number,
-    public createdAt: Date = new Date()
+    public createdAt: Date,
+    public updatedAt: Date
   ) {}
 }

@@ -3,6 +3,7 @@ import { OrdersController } from './controllers/orders/orders.controller';
 import { PaymentsController } from './controllers/orders/payments.controller';
 import { ConfigModule } from '@nestjs/config';
 import { CustomerApplicationModule } from '@autoabzar-test/customer-application';
+import { OrderApplicationModule } from '@autoabzar-test/order-application';
 import { CustomerController } from './controllers/customers/customers.controller';
 import { AuthController } from './controllers/customers/auth.controller';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -15,6 +16,7 @@ import { IsAdminMiddleware } from './middlewares/is-admin.middleware';
       isGlobal: true,
     }),
     CustomerApplicationModule,
+    OrderApplicationModule,
     CqrsModule,
   ],
   controllers: [
@@ -27,12 +29,26 @@ import { IsAdminMiddleware } from './middlewares/is-admin.middleware';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware, IsAdminMiddleware)
-      .forRoutes(CustomerController);
+    consumer.apply(AuthMiddleware, IsAdminMiddleware).forRoutes(
+      CustomerController,
+      {
+        path: 'orders/:id',
+        method: RequestMethod.GET,
+      },
+      {
+        path: 'orders/list/:customerId',
+        method: RequestMethod.GET,
+      }
+    );
 
-      consumer
+    consumer
       .apply(AuthMiddleware)
-      .forRoutes({ path: 'auth/', method: RequestMethod.PUT });
+      .forRoutes(
+        { path: 'auth/', method: RequestMethod.PUT },
+        { path: 'orders/', method: RequestMethod.POST },
+        { path: 'orders/:id', method: RequestMethod.DELETE },
+        { path: 'orders/', method: RequestMethod.PUT },
+        { path: 'orders/list/', method: RequestMethod.GET }
+      );
   }
 }
