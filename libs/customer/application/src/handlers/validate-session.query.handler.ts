@@ -1,28 +1,24 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { ValidateSessionQuery } from '../queries/validate-session.query';
 import {
-  Customer,
   ICustomerUnitOfWork,
   ITokenTools,
-  Session,
 } from '@autoabzar-test/customer-domain';
 import { Inject, UnauthorizedException } from '@nestjs/common';
-import { ValidateSessionResponose } from '../responses/validate-session.response';
+import { ValidateSessionDto } from '../responses/validate-session.dto';
 
 @QueryHandler(ValidateSessionQuery)
 export class ValidateSessionQueryHandler
-  implements IQueryHandler<ValidateSessionQuery, ValidateSessionResponose>
+  implements IQueryHandler<ValidateSessionQuery, ValidateSessionDto>
 {
   constructor(
     @Inject('ITokenTools') private readonly tt: ITokenTools,
     @Inject('ICustomerUnitOfWork') private readonly uow: ICustomerUnitOfWork
   ) {}
 
-  async execute(
-    query: ValidateSessionQuery
-  ): Promise<ValidateSessionResponose> {
-    const customerRepo = this.uow.getRepository<Customer>('Customer');
-    const sessionRepo = this.uow.getRepository<Session>('Session');
+  async execute(query: ValidateSessionQuery): Promise<ValidateSessionDto> {
+    const customerRepo = this.uow.customerRepository;
+    const sessionRepo = this.uow.sessionRepository;
 
     let userId: number;
 
@@ -57,6 +53,6 @@ export class ValidateSessionQueryHandler
       throw new UnauthorizedException('User not found');
     }
 
-    return new ValidateSessionResponose(customer.isAdmin, customer.id);
+    return new ValidateSessionDto(customer.isAdmin, customer.id);
   }
 }

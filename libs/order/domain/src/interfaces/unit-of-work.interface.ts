@@ -1,3 +1,3 @@
 import { IUnitOfWork } from '@autoabzar-test/tools';
 
-export type IOrderUnitOfWork = IUnitOfWork
+export type IOrderUnitOfWork = IUnitOfWork;

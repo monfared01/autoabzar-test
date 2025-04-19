@@ -1,18 +1,18 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LoginCustomerCommand } from '../commands/login-customer.command';
 import {
-  Customer,
   ICustomerUnitOfWork,
   IPasswordTools,
   ITokenTools,
-  Session,
 } from '@autoabzar-test/customer-domain';
 import { Inject, NotFoundException } from '@nestjs/common';
-import { LoginCustomerResponose } from '../responses/login-customer.response';
+import { LoginCustomerResponose } from '../responses/login-customer.response.dto';
+import { ResponseDto } from '../responses/response.dto';
 
 @CommandHandler(LoginCustomerCommand)
 export class LoginCustomerCommandHandler
-  implements ICommandHandler<LoginCustomerCommand, LoginCustomerResponose>
+  implements
+    ICommandHandler<LoginCustomerCommand, ResponseDto<LoginCustomerResponose>>
 {
   constructor(
     @Inject('ICustomerUnitOfWork') private readonly uow: ICustomerUnitOfWork,
@@ -22,11 +22,8 @@ export class LoginCustomerCommandHandler
 
   async execute(
     command: LoginCustomerCommand
-  ): Promise<LoginCustomerResponose> {
-    const customerRepo = this.uow.getRepository<Customer>('Customer');
-    const sessionRepo = this.uow.getRepository<Session>('Session');
-
-    const customer = await customerRepo.findOne({
+  ): Promise<ResponseDto<LoginCustomerResponose>> {
+    const customer = await this.uow.customerRepository.findOne({
       where: { email: command.email },
     });
 
@@ -36,23 +33,30 @@ export class LoginCustomerCommandHandler
       );
     }
 
-    if ((await this.pt.compare(command.password, customer.password)) == false) {
-      throw new NotFoundException(`Customer with this password not found`);
+    const passwordMatch = await this.pt.compare(
+      command.password,
+      customer.password
+    );
+    if (!passwordMatch) {
+      throw new NotFoundException('Invalid credentials');
     }
 
     const accessToken = await this.tt.encode({ userId: customer.id });
     const refreshToken = this.tt.generateGuid();
 
-    await sessionRepo.updateMany(
+    await this.uow.sessionRepository.updateMany(
       { customerId: customer.id, isRevoked: false },
       { isRevoked: true }
     );
 
-    await sessionRepo.create({
+    await this.uow.sessionRepository.create({
       customerId: customer.id,
       refreshToken,
     });
 
-    return new LoginCustomerResponose(accessToken, refreshToken);
+    return ResponseDto.ok(
+      new LoginCustomerResponose(accessToken, refreshToken),
+      'Login successful'
+    );
   }
 }

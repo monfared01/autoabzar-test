@@ -1,5 +1,5 @@
-import { Inject, Injectable, Scope } from '@nestjs/common';
-import { UnitOfWork, IGenericRepository } from '@autoabzar-test/tools';
+import { Injectable, Scope } from '@nestjs/common';
+import { UnitOfWork } from '@autoabzar-test/tools';
 import {
   ICustomerRepository,
   ISessionRepository,
@@ -19,7 +19,7 @@ export class CustomerUnitOfWork
   private _customerRepository?: ICustomerRepository;
   private _sessionRepository?: ISessionRepository;
 
-  constructor(@Inject('DataSource') dataSource: DataSource) {
+  constructor(dataSource: DataSource) {
     super(dataSource);
   }
 
@@ -39,17 +39,5 @@ export class CustomerUnitOfWork
       );
     }
     return this._sessionRepository;
-  }
-
-  getRepository<T>(entity: string): IGenericRepository<T> {
-    if (entity === 'Customer') {
-      return this.customerRepository as unknown as IGenericRepository<T>;
-    }
-
-    if (entity === 'Session') {
-      return this.sessionRepository as unknown as IGenericRepository<T>;
-    }
-
-    throw new Error(`Repository for entity ${entity.toString()} not found`);
   }
 }

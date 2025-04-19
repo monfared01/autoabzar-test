@@ -1,4 +1,4 @@
-import { Inject, Injectable, Scope } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import { DataSource, EntityTarget } from 'typeorm';
 import { UnitOfWork, IGenericRepository } from '@autoabzar-test/tools';
 import {
@@ -12,7 +12,7 @@ import { OrderRepository } from './repositories/order.repository';
 export class OrderUnitOfWork extends UnitOfWork implements IOrderUnitOfWork {
   private _customerRepository?: IOrderRepository;
 
-  constructor(@Inject('DataSource') dataSource: DataSource) {
+  constructor(dataSource: DataSource) {
     super(dataSource);
   }
 

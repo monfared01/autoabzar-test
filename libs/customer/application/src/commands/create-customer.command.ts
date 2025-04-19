@@ -1,5 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { IsBoolean, IsEmail, IsString, MinLength } from 'class-validator';
 
 export class CreateCustomerCommand implements ICommand {
   @IsString()
@@ -11,9 +11,13 @@ export class CreateCustomerCommand implements ICommand {
   @MinLength(6)
   password: string;
 
-  constructor(name: string, email: string, password: string) {
+  @IsBoolean()
+  isAdmin: boolean;
+
+  constructor(name: string, email: string, password: string, isAdmin: boolean) {
     this.name = name;
     this.email = email;
     this.password = password;
+    this.isAdmin = isAdmin;
   }
 }

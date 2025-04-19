@@ -2,9 +2,11 @@ import { DataSource } from 'typeorm';
 import { DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
 import * as fs from 'fs';
-
+import * as path from 'path';
 
 config();
+
+const isTs = path.extname(__filename) === '.ts';
 
 export const dataSourceConfig: DataSourceOptions = {
   type: 'postgres',
@@ -18,8 +20,12 @@ export const dataSourceConfig: DataSourceOptions = {
     rejectUnauthorized: true,
     ca: fs.readFileSync(process.env['DB_SSL_CA_PATH'] as string).toString(),
   },
-  entities: ['libs/**/infrastructure/**/*.entity.{ts,js}'],
-  migrations: ['libs/shared/db/src/connection/migrations/*.ts'],
+  entities: [
+    isTs
+      ? 'libs/**/infrastructure/**/*.entity.ts'
+      : 'dist/libs/**/infrastructure/**/*.entity.js',
+  ],
+  // migrations: ['libs/shared/db/src/connection/migrations/*.ts'],
 };
 
 export default new DataSource(dataSourceConfig);

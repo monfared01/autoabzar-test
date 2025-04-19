@@ -1,3 +1,8 @@
 import { IUnitOfWork } from '@autoabzar-test/tools';
+import { ICustomerRepository } from './repositories/customer.repository.interface';
+import { ISessionRepository } from './repositories/session.repository.interface';
 
-export type ICustomerUnitOfWork = IUnitOfWork
+export interface ICustomerUnitOfWork extends IUnitOfWork {
+  readonly customerRepository: ICustomerRepository;
+  readonly sessionRepository: ISessionRepository;
+}

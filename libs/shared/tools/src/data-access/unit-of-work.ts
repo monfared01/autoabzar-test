@@ -1,11 +1,12 @@
 import { DataSource, EntityManager } from 'typeorm';
 import { IUnitOfWork } from './unit-of-work.interface';
-import { IGenericRepository } from './generic-repository.interface';
 
 export abstract class UnitOfWork implements IUnitOfWork {
   private _manager!: EntityManager;
 
-  constructor(private readonly dataSource: DataSource) {}
+  constructor(private readonly dataSource: DataSource) {
+    this._manager = this.dataSource.manager;
+  }
 
   get manager(): EntityManager {
     return this._manager;
@@ -25,6 +26,4 @@ export abstract class UnitOfWork implements IUnitOfWork {
     await this._manager.queryRunner?.rollbackTransaction();
     await this._manager.queryRunner?.release();
   }
-
-  abstract getRepository<T>(entity: string): IGenericRepository<T>;
 }

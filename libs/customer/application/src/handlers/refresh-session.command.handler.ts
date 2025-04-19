@@ -2,16 +2,20 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   ICustomerUnitOfWork,
   ITokenTools,
-  Session,
 } from '@autoabzar-test/customer-domain';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { RefreshSessionCommand } from '../commands/refresh-session.command';
-import { RefreshSessionResponose } from '../responses/refresh-token.response';
+import { RefreshSessionResponose } from '../responses/refresh-token.response.dto';
 import { MoreThan } from 'typeorm';
+import { ResponseDto } from '../responses/response.dto';
 
 @CommandHandler(RefreshSessionCommand)
 export class RefreshSessionCommandHandler
-  implements ICommandHandler<RefreshSessionCommand, RefreshSessionResponose>
+  implements
+    ICommandHandler<
+      RefreshSessionCommand,
+      ResponseDto<RefreshSessionResponose>
+    >
 {
   constructor(
     @Inject('ICustomerUnitOfWork') private readonly uow: ICustomerUnitOfWork,
@@ -20,15 +24,13 @@ export class RefreshSessionCommandHandler
 
   async execute(
     command: RefreshSessionCommand
-  ): Promise<RefreshSessionResponose> {
-    const sessionRepo = this.uow.getRepository<Session>('Session');
-
+  ): Promise<ResponseDto<RefreshSessionResponose>> {
     const { userId } = await this.tt.decode<{ userId: number }>(
       command.accessToken,
       true
     );
 
-    const session = await sessionRepo.findOne({
+    const session = await this.uow.sessionRepository.findOne({
       where: {
         customerId: userId,
         refreshToken: command.refreshToken,
@@ -38,9 +40,13 @@ export class RefreshSessionCommandHandler
     });
 
     if (!session) {
-      throw new NotFoundException(`Invalid token !`);
+      throw new NotFoundException('Invalid token');
     }
 
-    return new RefreshSessionResponose(await this.tt.encode({ userId }));
+    const newAccessToken = await this.tt.encode({ userId });
+    return ResponseDto.ok(
+      new RefreshSessionResponose(newAccessToken),
+      'Token refreshed'
+    );
   }
 }
