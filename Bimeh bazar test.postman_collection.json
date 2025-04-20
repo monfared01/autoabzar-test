@@ -220,6 +220,74 @@
 			"name": "Order",
 			"item": [
 				{
+					"name": "Payments",
+					"item": [
+						{
+							"name": "Create payment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"orderId\": 3\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/payments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"payments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify payment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"voucherId\": \"108280a9-7450-4f01-924e-f3a32e4eab7f\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/payments/verify-payment",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"payments",
+										"verify-payment"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Create Order",
 					"request": {
 						"auth": {
@@ -363,20 +431,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/orders/11",
+							"raw": "{{base_url}}/orders/4",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"orders",
-								"11"
+								"4"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get by id Copy",
+					"name": "Get by customer id",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -415,7 +483,7 @@
 		},
 		{
 			"key": "token",
-			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTc0NTA5NDA2MiwiZXhwIjoxNzQ1MDk3NjYyfQ.-547AN0uU5g6Y31oAXEojslU3o8Nbkz5bp2G0yo9Y5s",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTc0NTExMDE2MywiZXhwIjoxNzQ1MTEzNzYzfQ.M64beH92Z2z5ihr-go-lKeXDBiWNFIfjGVBrlBDDaEA",
 			"type": "string"
 		}
 	]

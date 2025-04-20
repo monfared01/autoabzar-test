@@ -4,6 +4,7 @@ import { Inject, NotFoundException } from '@nestjs/common';
 import { IOrderUnitOfWork } from '@autoabzar-test/order-domain';
 import { OrderResponse } from '../responses/order.response.dto';
 import { ResponseDto } from '../responses/response.dto';
+import { PaymentResponse } from '../responses/payment.response.dto';
 
 @QueryHandler(FindOrderByIdQuery)
 export class FindOrderByIdQueryHandler
@@ -32,7 +33,16 @@ export class FindOrderByIdQueryHandler
         order.id,
         order.total,
         order.createdAt,
-        order.updatedAt
+        order.updatedAt,
+        (order.payments ?? []).map(
+          (payment) =>
+            new PaymentResponse(
+              payment.voucherId,
+              payment.status,
+              payment.createdAt,
+              payment.updatedAt
+            )
+        )
       ),
       'Order found'
     );

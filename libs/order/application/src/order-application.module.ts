@@ -6,11 +6,15 @@ import { DeleteOrderCommandHandler } from './handlers/delete-order.commad.handle
 import { UpdateOrderCommandHandler } from './handlers/update-order.commad.handler';
 import { FindAllOrdersQueryHandler } from './handlers/find-order-all.query.handler';
 import { FindOrderByIdQueryHandler } from './handlers/find-order-by-id.query.handler';
+import { CreatePaymentCommandHandler } from './handlers/create-payment.command.handler';
+import { VerifyPaymentCommandHandler } from './handlers/verify-payment.command.handler';
 
 const CommandHandlers = [
   CreateOrderCommandHandler,
   DeleteOrderCommandHandler,
   UpdateOrderCommandHandler,
+  CreatePaymentCommandHandler,
+  VerifyPaymentCommandHandler,
 ];
 
 const QueryHandlers = [FindAllOrdersQueryHandler, FindOrderByIdQueryHandler];

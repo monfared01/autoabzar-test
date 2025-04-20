@@ -48,7 +48,8 @@ export class AppModule {
         { path: 'orders/', method: RequestMethod.POST },
         { path: 'orders/:id', method: RequestMethod.DELETE },
         { path: 'orders/', method: RequestMethod.PUT },
-        { path: 'orders/list/', method: RequestMethod.GET }
+        { path: 'orders/list/', method: RequestMethod.GET },
+        { path: 'payments/', method: RequestMethod.POST }
       );
   }
 }

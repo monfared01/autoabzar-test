@@ -30,8 +30,8 @@ export class OrderEntity extends DecoratedEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => PaymentEntity, (payment) => payment.order, { lazy: true })
-  payments: Promise<PaymentEntity[]>;
+  @OneToMany(() => PaymentEntity, (payment) => payment.order)
+  payments: PaymentEntity[];
 
   static fromDomain(order: Order): OrderEntity {
     const entity = new OrderEntity();
@@ -39,6 +39,9 @@ export class OrderEntity extends DecoratedEntity {
     entity.customerId = order.customerId;
     entity.total = order.total;
     entity.createdAt = order.createdAt;
+    entity.updatedAt = order.updatedAt;
+    entity.payments =
+      order.payments?.map((p) => PaymentEntity.fromDomain(p)) ?? [];
     return entity;
   }
 
@@ -48,7 +51,8 @@ export class OrderEntity extends DecoratedEntity {
       this.customerId,
       this.total,
       this.createdAt,
-      this.updatedAt
+      this.updatedAt,
+      this.payments?.map((payment) => payment.toDomain()) ?? []
     );
   }
 }
