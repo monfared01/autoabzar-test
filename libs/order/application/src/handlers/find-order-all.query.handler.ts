@@ -23,6 +23,7 @@ export class FindAllOrdersQueryHandler
       where: {
         customerId: query.customerId,
       },
+      relations: ['payments']
     });
 
     const response = orders.map((order) => {

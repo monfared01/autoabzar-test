@@ -22,6 +22,7 @@ export class FindOrderByIdQueryHandler
 
     const order = await repo.findOne({
       where: { id: query.id },
+      relations: ['payments']
     });
 
     if (!order) {
